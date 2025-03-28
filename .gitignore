@@ -2,5 +2,5 @@
 !.gitignore
 !.git
 venv/
-data/KingBase2019-pgn/
+data/LumbrasGigaBase/
 __pycache__/
