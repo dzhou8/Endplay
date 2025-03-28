@@ -7,7 +7,7 @@ from stockfish import Stockfish
 if "board" not in st.session_state:
     st.session_state.board = chess.Board()
 
-stockfish = Stockfish(path='stockfish-ubuntu-x86-64-avx2"')
+stockfish = Stockfish(path='stockfish-ubuntu-x86-64-avx2')
 
 # Display board
 st.write("### Play against Stockfish")
