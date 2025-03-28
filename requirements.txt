@@ -1,7 +1,7 @@
-chess == 1.11.2
-tqdm == 4.67.1
-stockfish == 3.28.0
-numpy == 2.2.4
-scikit-learn == 1.6.1
-torch == 2.6.0
-matplotlib == 3.10.1
+torch
+numpy
+scikit-learn
+matplotlib
+python-chess
+stockfish
+tqdm
