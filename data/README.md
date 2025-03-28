@@ -1,0 +1,2 @@
+This folder contains KingBase2019-pgn, a dataset of 2.2M master-level chess games.
+This raw data is too large to store on github. You can download the full dataset from [https://archive.org/details/KingBase2019]
