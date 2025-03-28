@@ -1,3 +1,6 @@
+import chess
+import numpy as np
+
 def board_to_tensor(board: chess.Board) -> np.ndarray:
     tensor = np.zeros((12, 8, 8), dtype=np.uint8)
 
@@ -17,7 +20,7 @@ def board_to_tensor(board: chess.Board) -> np.ndarray:
     }
 
     for square, piece in board.piece_map().items():
-        row = 7 - chess.square_rank(square) # Flip for correct orientation
+        row = chess.square_rank(square) # Flip for correct orientation
         col = chess.square_file(square)
         idx = piece_to_index[(piece.piece_type, piece.color)]
         tensor[idx, row, col] = 1
@@ -28,10 +31,10 @@ def move_to_tensor(move: chess.Move) -> np.ndarray:
     start_mask = np.zeros((8, 8), dtype=np.uint8)
     end_mask = np.zeros((8, 8), dtype=np.uint8)
 
-    start_row = 7 - chess.square_rank(move.from_square)
+    start_row = chess.square_rank(move.from_square)
     start_col = chess.square_file(move.from_square)
 
-    end_row = 7 - chess.square_rank(move.to_square)
+    end_row = chess.square_rank(move.to_square)
     end_col = chess.square_file(move.to_square)
 
     start_mask[start_row, start_col] = 1
@@ -75,9 +78,9 @@ def tensor_to_move(y):
     for row in range(8):
         for col in range(8):
             if start_mask[row, col]:
-                from_square = chess.square(col, 7 - row)
+                from_square = chess.square(col, row)
             if end_mask[row, col]:
-                to_square = chess.square(col, 7 - row)
+                to_square = chess.square(col, row)
 
     if from_square is not None and to_square is not None:
         return chess.Move(from_square, to_square)

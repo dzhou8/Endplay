@@ -3,3 +3,4 @@
 !.git
 venv/
 data/KingBase2019-pgn/
+__pycache__/
