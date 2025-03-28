@@ -62,7 +62,7 @@ def tensor_to_board(x):
         for row in range(8):
             for col in range(8):
                 if x[i, row, col] == 1:
-                    rank = 7 - row
+                    rank = row
                     file = col
                     square = chess.square(file, rank)
                     piece_type, color = index_to_piece[i]
