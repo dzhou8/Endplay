@@ -2,5 +2,5 @@
 !.gitignore
 !.git
 venv/
-data/LumbrasGigaBase/
+data/LumbrasGigaBase/LumbrasGigaBase_2024.pgn
 __pycache__/
