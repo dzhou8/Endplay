@@ -12,6 +12,19 @@ stockfish = Stockfish(path="./bin/stockfish-ubuntu-x86-64-avx2")
 def index():
     return render_template("index.html")
 
+@app.route("/set_fen", methods=["POST"])
+def set_fen():
+    global board
+    data = request.get_json()
+    fen = data["fen"]
+
+    try:
+        board.set_fen(fen)
+        stockfish.set_fen_position(fen)
+        return jsonify({"fen": board.fen()})
+    except Exception as e:
+        return jsonify({"error": "Invalid FEN", "details": str(e)}), 400
+
 @app.route("/move", methods=["POST"])
 def move():
     global board

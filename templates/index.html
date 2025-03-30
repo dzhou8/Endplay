@@ -22,6 +22,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
 
   <style>
+    #setFen {
+      margin-top: 10px;
+    }
+
     #myBoard {
       width: 400px;
       margin: 20px auto;
@@ -30,6 +34,10 @@
 </head>
 <body>
 
+<div style="text-align: center; margin-top: 20px;">
+  <input type="text" id="fenInput" placeholder="Enter FEN..." style="width: 60%;" />
+  <button onclick="loadFEN()">Load FEN</button>
+</div>
 <div id="myBoard"></div>
 
 <script type="text/javascript">
@@ -67,6 +75,28 @@
 
   function onSnapEnd() {
     board.position(game.fen());
+  }
+  
+  function loadFEN() {
+    fen_text = document.getElementById('fenInput').value
+    fetch("/set_fen", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({fen: fen_text})
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.error) {
+        alert("Error loading FEN");
+        return
+      }
+      board.position(data.fen)
+      game.load(data.fen)
+    })
+    .catch(err => {
+      console.error("Request failed:", err);
+      alert("Something went wrong while loading the FEN.");
+    })
   }
 
   board = Chessboard("myBoard", {
