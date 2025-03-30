@@ -4,3 +4,4 @@ matplotlib
 python-chess
 stockfish
 tqdm
+flask

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>EndPlay</title>
+  <!-- JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <!-- Chessboard.js-->
+  <link rel="stylesheet"
+      href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"
+      integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU"
+      crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+      integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
+      crossorigin="anonymous"></script>
+
+  <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"
+      integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD"
+      crossorigin="anonymous"></script>
+
+  <!-- chess.js-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+  <style>
+    #myBoard {
+      width: 400px;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+
+<div id="myBoard"></div>
+
+<script type="text/javascript">
+  const game = new Chess();
+  let board = null;
+
+  function onDrop(source, target) {
+    let move = game.move({ from: source, to: target, promotion: "q" });
+    if (move === null) return "snapback";
+
+    fetch("/move", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ move: source + target })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.error) {
+        alert("Server rejected move: " + data.error);
+        game.undo();
+        board.position(game.fen());
+        return;
+      }
+      const newFen = data.fen;
+      game.load(newFen);
+      board.position(newFen);
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Server error");
+      game.undo();
+      board.position(game.fen());
+    });
+  }
+
+  function onSnapEnd() {
+    board.position(game.fen());
+  }
+
+  board = Chessboard("myBoard", {
+    draggable: true,
+    position: "start",
+    pieceTheme: "https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png",
+    onDrop: onDrop,
+    onSnapEnd: onSnapEnd
+  });
+</script>
+
+</body>
+</html>
