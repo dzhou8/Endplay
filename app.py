@@ -48,12 +48,12 @@ def move():
         if best_move:
             board.push(chess.Move.from_uci(best_move))
 
-    return jsonify({"fen": board.fen()})
+    return jsonify({"fen": board.fen(), "output": "hello world"})
 
 @app.route("/positions")
 def positions():
     positions = []
-    with open("positions.txt", "r") as f:
+    with open("./templates/positions.txt", "r") as f:
         for line in f:
             if "|" not in line:
                 continue
