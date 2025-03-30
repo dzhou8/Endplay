@@ -50,6 +50,18 @@ def move():
 
     return jsonify({"fen": board.fen()})
 
+@app.route("/positions")
+def positions():
+    positions = []
+    with open("positions.txt", "r") as f:
+        for line in f:
+            if "|" not in line:
+                continue
+            label, fen = line.strip().split("|", 1)
+            positions.append({ "label": label, "fen": fen })
+    return jsonify(positions)
+
+
 if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 5000))

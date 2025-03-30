@@ -3,55 +3,99 @@
 <head>
   <meta charset="UTF-8">
   <title>EndPlay</title>
-  <!-- JQuery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <!-- Chessboard.js-->
-  <link rel="stylesheet"
-      href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"
-      integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU"
-      crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-      integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
-      crossorigin="anonymous"></script>
 
-  <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"
-      integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD"
-      crossorigin="anonymous"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <!-- chess.js-->
+  <!-- Chessboard.js -->
+  <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+  <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+
+  <!-- Chess.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
 
   <style>
-    #setFen {
-      margin-top: 10px;
-    }
-
     #myBoard {
       width: 400px;
       margin: 20px auto;
     }
+
+    #promotionSelector {
+      visibility:hidden;
+      text-align: center;
+      margin-top: 10px;
+      height: 40px;
+    }
+
+    #promotionSelector.show {
+    visibility: visible;
+    }
+
+    #promotionSelector button {
+      font-size: 20px;
+      margin: 0 5px;
+    }
   </style>
 </head>
+
 <body>
 
 <div style="text-align: center; margin-top: 20px;">
-  <input type="text" id="fenInput" placeholder="Enter FEN..." style="width: 60%;" />
+  <textarea id="fenInput" placeholder="Enter FEN..." rows="3" style="width: 20%; resize: vertical;"></textarea>
   <button onclick="loadFEN()">Load FEN</button>
 </div>
+
+<div id="promotionSelector">
+  Promote to:
+  <button onclick="handlePromotionChoice('q')">♛</button>
+  <button onclick="handlePromotionChoice('r')">♜</button>
+  <button onclick="handlePromotionChoice('b')">♝</button>
+  <button onclick="handlePromotionChoice('n')">♞</button>
+</div>
+
 <div id="myBoard"></div>
 
-<script type="text/javascript">
+<script>
   const game = new Chess();
   let board = null;
+  let pendingPromotion = null;
 
   function onDrop(source, target) {
-    let move = game.move({ from: source, to: target, promotion: "q" });
-    if (move === null) return "snapback";
+    const piece = game.get(source);
+    const isPromotion =
+      piece && piece.type === 'p' &&
+      ((piece.color === 'w' && target[1] === '8') ||
+       (piece.color === 'b' && target[1] === '1'));
+
+    if (isPromotion) {
+      pendingPromotion = { from: source, to: target };
+      document.getElementById("promotionSelector").classList.add("show");
+      return "snapback"; // wait for promotion choice
+    }
+
+    return tryMove(source, target);
+  }
+
+  function handlePromotionChoice(promotion) {
+    const { from, to } = pendingPromotion;
+    pendingPromotion = null;
+    document.getElementById("promotionSelector").classList.remove("show");
+    tryMove(from, to, promotion);
+  }
+
+  function tryMove(from, to, promotion) {
+    const move = game.move({ from, to, promotion });
+
+    if (move === null) {
+      return "snapback";
+    }
+
+    const moveStr = from + to + (promotion || "");
 
     fetch("/move", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ move: source + target })
+      body: JSON.stringify({ move: moveStr })
     })
     .then(response => response.json())
     .then(data => {
@@ -61,9 +105,8 @@
         board.position(game.fen());
         return;
       }
-      const newFen = data.fen;
-      game.load(newFen);
-      board.position(newFen);
+      game.load(data.fen);
+      board.position(data.fen);
     })
     .catch(err => {
       console.error(err);
@@ -76,30 +119,30 @@
   function onSnapEnd() {
     board.position(game.fen());
   }
-  
+
   function loadFEN() {
-    fen_text = document.getElementById('fenInput').value
+    const fenText = document.getElementById('fenInput').value.trim();
     fetch("/set_fen", {
       method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({fen: fen_text})
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fen: fenText })
     })
     .then(response => response.json())
     .then(data => {
       if (data.error) {
         alert("Error loading FEN");
-        return
+        return;
       }
-      board.position(data.fen)
-      game.load(data.fen)
+      board.position(data.fen);
+      game.load(data.fen);
     })
     .catch(err => {
       console.error("Request failed:", err);
       alert("Something went wrong while loading the FEN.");
-    })
+    });
   }
 
-  board = Chessboard("myBoard", {
+  board = Chessboard("#myBoard", {
     draggable: true,
     position: "start",
     pieceTheme: "https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png",
