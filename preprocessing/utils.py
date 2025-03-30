@@ -68,6 +68,7 @@ def tensor_to_board(x):
                     piece_type, color = index_to_piece[i]
                     board.set_piece_at(square, chess.Piece(piece_type, color))
 
+    board.turn = chess.BLACK
     return board
 
 def tensor_to_move(y):
