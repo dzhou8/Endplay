@@ -3,5 +3,5 @@
 !.git
 venv/
 data/LumbrasGigaBase/*.pgn
-data/6_less.pgn
+preprocessing/6_less.pgn
 __pycache__/
