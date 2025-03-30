@@ -1,2 +1,3 @@
-This folder contains KingBase2019-pgn, a dataset of 2.2M master-level chess games.
-This raw data is too large to store on github. You can download the full dataset from [https://archive.org/details/KingBase2019]
+This folder contains LumbrasGigaBase, a free master-level database of 15M+ games.
+This raw data is too large to store on github. You can download the full dataset from [https://lumbrasgigabase.com/en/]
+At the time or writing, we chose to only use 2024 data from [https://lumbrasgigabase.com/en/download-in-pgn-format-en/].
