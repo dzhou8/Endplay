@@ -34,4 +34,4 @@ def split_pgn(input_file, batch_size=10000):
         print(f"Finished splitting into {batch_idx + 1} batches.")
 
 # Example usage:
-split_pgn("./LumbrasGigaBase_2024.pgn", batch_size=100000)
+split_pgn("./LumbrasGigaBase_2023.pgn", batch_size=100000)
