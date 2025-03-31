@@ -2,7 +2,7 @@ import chess
 import numpy as np
 
 def board_to_tensor(board: chess.Board) -> np.ndarray:
-    tensor = np.zeros((12, 8, 8), dtype=np.uint8)
+    tensor = np.zeros((14, 8, 8), dtype=np.uint8)
 
     piece_to_index = {
         (chess.PAWN, chess.WHITE): 0,
@@ -24,6 +24,12 @@ def board_to_tensor(board: chess.Board) -> np.ndarray:
         col = chess.square_file(square)
         idx = piece_to_index[(piece.piece_type, piece.color)]
         tensor[idx, row, col] = 1
+
+    # explicit positional encoding
+    for row in range(8):
+        tensor[12, row, :] = row / 7.0
+    for col in range(8):
+        tensor[13, :, col] = col / 7.0
 
     return tensor
 
