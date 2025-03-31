@@ -55,10 +55,13 @@ def positions():
     positions = []
     with open("./templates/positions.txt", "r") as f:
         for line in f:
-            if "|" not in line:
+            if not line:
                 continue
-            label, fen = line.strip().split("|", 1)
-            positions.append({ "label": label, "fen": fen })
+            if "|" in line:
+                label, fen = line.strip().split("|", 1)
+                positions.append({"type": "position", "label": label, "fen": fen })
+            else:
+                positions.append({"type":"header", "title": line})
     return jsonify(positions)
 
 
