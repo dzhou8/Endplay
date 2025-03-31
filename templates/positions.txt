@@ -1,6 +1,34 @@
-King-Pawn Endgame|8/5k2/3K4/8/3P4/8/8/8 w - - 4 3
-Lucena Position|1K1k4/1P6/8/8/8/8/r7/2R5 w - - 0 1
-Queen v Rook|4Q3/6kr/8/6K1/8/8/8/8 w - - 0 1
-Philidor Position|3k4/4r3/3K1R2/3B4/8/8/8/8 w - - 0 1
-Breakthrough|8/5ppp/8/5PPP/8/1k6/8/1K6 w - - 0 1
-Promotion Test|8/1P1k4/8/8/1K6/8/8/8 w - - 1 9
+Elementary Endings
+King and Queen against King|K7/8/8/3k4/8/8/8/Q7 w - - 0 1
+King and Rook against King|K7/8/8/3k4/8/8/8/R7 w - - 0 1
+King and two Bishops against King|8/8/8/3k4/8/8/8/K2BB3 w - - 0 1
+King, and two Knights against King (Draw)|7k/8/4N1K1/5N2/8/8/8/8 w - - 0 1
+King, Bishop and Knight against King|N7/8/8/8/4k3/8/8/K5B1 w - - 0 1
+
+Pawn Endings
+King and Pawn against King|8/8/8/6k1/8/8/5PK1/8 w - - 0 1
+King and Pawn against King and Pawn|4k3/8/4p3/4P3/8/3K4/8/8 w - - 0 1
+King and two Pawns against King and Pawn|8/8/1p1k4/1P6/3PK3/8/8/8 w - - 0 1
+King and two Pawns against King and two Pawns|8/8/1pp2k2/8/P1P2K2/8/8/8 w - - 0 1
+
+Queen Endings
+Queen against Pawn|K6Q/8/8/8/8/8/3pk3/8 w - - 0 1
+Queen against Rook|8/8/8/2rk4/8/3K2Q1/8/8 w - - 0 1
+Queen against Queen|8/8/8/8/8/3K3Q/1k6/q7 w - - 0 1
+Queen against Two Rooks|5q1k/1RR5/8/8/8/8/4K3/8 w - - 0 1
+
+Rook Endings
+Rook against Pawn|3K4/8/8/5p2/4k3/8/8/R7 w - - 0 1
+Rook and Pawn against Rook|4k1K1/6P1/8/8/8/8/7r/5R2 w - - 0 1
+Rook and Pawn against Rook and Pawn|2K5/2P4R/8/k7/8/8/2r5/8 w - - 0 1
+Rook and Bishop against Rook|3k4/4r3/3K4/3B4/8/8/8/5R2 w - - 0 1
+
+Bishop Endings
+Bishop and Pawn against Bishop|3k4/5K2/4P3/2b5/8/2B5/8/8 w - - 0 1
+Bishops of the same color|B3K3/8/8/P1p5/8/8/2b4k/8 w - - 0 1
+Bishops of the opposite color|8/3k4/8/2PP4/3K4/6b1/4B3/8 w - - 0 1
+Bishop and Pawn against Knight|4n2B/3K4/2P5/2k5/8/8/8/8 w - - 0 1
+
+Knight Endings
+Knight and Pawn against Pawn|8/5k2/7P/6K1/1N6/p7/8/8 w - - 0 1
+Knight and Pawn against Knight|8/KP1n4/2k5/8/5N2/8/8/8 w - - 0 1

@@ -48,7 +48,7 @@
     }
 
     #positionList {
-      width: 200px;
+      width: 300px;
       padding: 20px;
       border-right: 1px solid #ccc;
     }
@@ -112,7 +112,7 @@
   </div>
 
   <!-- Text output-->
-  <div id="outputBox" class="collapsed" style="
+  <div id="outputBox" style="
     width: 250px;
     padding: 20px;
     background-color: #f5f5f5;
@@ -131,7 +131,10 @@
 </div>
 
 <script>
+  const initialFEN = "4k1K1/6P1/8/8/8/8/7r/5R2 w - - 0 1";
+
   const game = new Chess();
+  game.load(initialFEN);
   let board = null;
   let pendingPromotion = null;
 
@@ -218,27 +221,32 @@
     });
   }
 
-  // Load saved positions into sidebar
   fetch("/positions")
-    .then(res => res.json())
-    .then(data => {
-      const container = document.getElementById("positionLinks");
-      container.innerHTML = "";
-      data.forEach(pos => {
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById("positionLinks");
+    container.innerHTML = "";
+
+    data.forEach(item => {
+      if (item.type === "header") {
+        const header = document.createElement("div");
+        header.textContent = item.title;
+        header.style.margin = "12px 0 6px";
+        header.style.fontWeight = "bold";
+        header.style.color = "#333";
+        container.appendChild(header);
+      } else if (item.type === "position") {
         const link = document.createElement("a");
         link.href = "#";
-        link.textContent = pos.label;
+        link.textContent = item.label;
         link.onclick = () => {
-          document.getElementById("fenInput").value = pos.fen;
+          document.getElementById("fenInput").value = item.fen;
           loadFEN();
         };
         container.appendChild(link);
-      });
-    })
-    .catch(err => {
-      console.error("Failed to load positions:", err);
-      document.getElementById("positionLinks").innerText = "Failed to load positions.";
+      }
     });
+  });
 
   function toggleRight() {
     const box = document.getElementById("outputBox");
@@ -249,11 +257,14 @@
 
   board = Chessboard("#myBoard", {
     draggable: true,
-    position: "start",
+    position: initialFEN,
     pieceTheme: "https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png",
     onDrop: onDrop,
     onSnapEnd: onSnapEnd
   });
+
+  document.getElementById('fenInput').value = initialFEN;
+  loadFEN();
 </script>
 
 </body>
