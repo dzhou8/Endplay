@@ -55,20 +55,24 @@ class ChessMoveCNN(nn.Module):
 
         # Input: (12, 8, 8) -> initial conv to expand channels
         in_channels = 12
-        channels = [('bb', 64), ('bb', 64), ('bb', 128), ('se', 128), ('bb', 128), ('bb', 128), ('bb', 128), ('se', 128)]
+        channels = [('bb', 64), ('bb', 64), ('bb', 128), ('se', 128), ('bb', 128), ('bb', 128), ('bb', 256), ('se', 256), ('bb', 256), ('bb', 256)]
         for type, out_channels in channels:
             if (type == 'bb'):
                 layers.append(BasicBlock(in_channels, out_channels))
             elif (type == 'se'):
-                layers.append(SEBlock(in_channels))
+                layers.append(SEBlock(out_channels))
             in_channels = out_channels
 
         self.res_blocks = nn.Sequential(*layers)
 
-        # Final prediction: 128 channels -> 2 heatmaps (start + end square)
-        self.out_conv = nn.Conv2d(in_channels, 2, kernel_size=1)
+        self.out_head = nn.Sequential(
+            nn.Conv2d(in_channels, 64, kernel_size=3, padding=1),
+            nn.BatchNorm2d(64),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(64, 2, kernel_size=1)
+        )
 
     def forward(self, x):
         x = self.res_blocks(x)      # (N, 128, 8, 8)
-        x = self.out_conv(x)        # (N, 2, 8, 8)
+        x = self.out_head(x)        # (N, 2, 8, 8)
         return x

@@ -9,13 +9,23 @@ from tqdm import tqdm
 
 import matplotlib.pyplot as plt
 
-def load_dataset(path, test_size, random_state):
-    data = np.load(path)
-    X = data["inputs"]
-    Y = data["outputs"]
+def load_dataset(paths, test_size=0.1, random_state=42):
+    all_X = []
+    all_Y = []
 
-    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = test_size, random_state = random_state)
+    for path in paths:
+        data = np.load(path)
+        all_X.append(data["inputs"])
+        all_Y.append(data["outputs"])
+
+    # Combine all data
+    X = np.concatenate(all_X, axis=0)
+    Y = np.concatenate(all_Y, axis=0)
+
+    # Train/test split
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_size, random_state=random_state)
     return (X_train, X_test, Y_train, Y_test)
+
 
 # given a tensor of solutions/answers, and a prediction function, outputs the top1 and top5 accuracy
 def evaluate(X_test, Y_test, predict_fn):
