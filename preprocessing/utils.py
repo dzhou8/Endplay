@@ -93,3 +93,26 @@ def tensor_to_move(y):
         return chess.Move(from_square, to_square)
     else:
         return None
+    
+def get_material_imbalance(board):
+    piece_values = {
+        chess.PAWN: 1,
+        chess.KNIGHT: 3,
+        chess.BISHOP: 3,
+        chess.ROOK: 5,
+        chess.QUEEN: 9,
+        chess.KING: 0  # King's value is not considered in material balance
+    }
+    
+    white_material = 0
+    black_material = 0
+    
+    for square in chess.SQUARES:
+        piece = board.piece_at(square)
+        if piece:
+            if piece.color == chess.WHITE:
+                white_material += piece_values[piece.piece_type]
+            else:
+                black_material += piece_values[piece.piece_type]
+                
+    return white_material - black_material

@@ -185,7 +185,7 @@
       }
       game.load(data.fen);
       board.position(data.fen);
-      document.getElementById("outputText").innerText = data.output || "";
+      document.getElementById("outputText").innerText = JSON.stringify(data.output, null, 2);
     })
     .catch(err => {
       console.error(err);

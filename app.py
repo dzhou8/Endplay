@@ -1,12 +1,17 @@
 from flask import Flask, request, render_template, jsonify
 import chess
 from stockfish import Stockfish
+import torch
+from model.ChessMoveCNN import ChessMoveCNN
+import json
 
 app = Flask(__name__)
 
 # Initialize global board and Stockfish engine
 board = chess.Board()
 stockfish = Stockfish(path="./bin/stockfish-ubuntu-x86-64-avx2")
+model = ChessMoveCNN()
+model.load_state_dict(torch.load('./model/early_stop.pt'))
 
 @app.route("/")
 def index():
@@ -40,15 +45,16 @@ def move():
     except:
         return jsonify({"error": "bad move format"}), 400
 
-    # If game not over, let Stockfish respond
+    output = "game over"
+    # If game not over, let Endplay respond
     if not board.is_game_over():
-        # Set position for Stockfish
-        stockfish.set_fen_position(board.fen())
-        best_move = stockfish.get_best_move()
-        if best_move:
-            board.push(chess.Move.from_uci(best_move))
+        print(board.fen())
+        best_moves = model.get_top_moves(board, 5)
+        output = [(board.san(move), float(score)) for move, score in best_moves]
+        board.push(best_moves[0][0])
 
-    return jsonify({"fen": board.fen(), "output": "hello world"})
+    print(output)
+    return jsonify({"fen": board.fen(), "output": output})
 
 @app.route("/positions")
 def positions():
