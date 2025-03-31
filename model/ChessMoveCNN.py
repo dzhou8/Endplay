@@ -1,4 +1,9 @@
 import torch.nn as nn
+import torch
+
+import sys
+sys.path.insert(1, '../preprocessing/')
+import utils
 
 class BasicBlock(nn.Module):
     def __init__(self, in_channels, out_channels):
@@ -79,3 +84,18 @@ class ChessMoveCNN(nn.Module):
         x = self.dropout(x)
         x = self.out_head(x)        # (N, 2, 8, 8)
         return x
+        
+    def get_top_moves(self, board, n=5):
+        x = utils.board_to_tensor(board)
+        y = self(x)[0]
+        pred = torch.sigmoid(y).detach().cpu().numpy()
+        start_map, end_map = pred
+
+        move_scores = []
+        for move in board.legal_moves():
+            score = start_map[move.from_square] * end_map[move.to_square]
+            move_scores.append((move, score))
+        
+        move_scores.sort(lambda x: x[1], reverse=True)
+        print(move_scores)
+        return move_scores[:n]
