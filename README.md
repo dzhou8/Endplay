@@ -1,1 +1,56 @@
-# Endplay
+# ♟️ EndPlay: A Chess Bot That Fights Back in Endgames
+
+A deep learning + classical engine hybrid that defends more resiliently than Stockfish alone
+
+Try the live demo -> [endplay.up.railway.app](https://endplay.up.railway.app/)
+
+## Why it's Different
+Chess engines can be a useful tool for practicing endgames. But they can often 'give up' in some positions, because every move is losing.
+![Stockfish Demo](./demo/stockfish.gif)
+Stockfish plays the "best" move, even if it trivially allows pawn promotion
+
+EndPlay plays the most testing, annoying, and resourceful moves -- like a strong human would
+![Endplay Demo](./demo/Endplay.gif)
+
+You can find common endgames or load your own position
+![Loading Demo](./demo/loading.gif)
+
+## What does it do?
+- Uses a CNN trained on master-level endgames
+- Predicts human-like responses to avoid 'obvious' defeat
+- Combines CNN scoring with Stockfish search
+- Deployed as a live web app (Flask + Torch)
+
+## Stack
+- **Frontend**: Chessboard.js + vanilla HTML
+- **Backend**: Flask, Python-Chess, Torch
+- **Model**: Custom ResNet-style CNN which predicts (start, end) maps
+- **Deployment**: Railway + Gunicorn
+
+## Future Work
+- Add capability for saving custom positions on the sidebar
+- Improving model performance, generally
+- Creating a spinoff version that plays as white, and pushes for the win
+  - the user tries to defend/draw as black
+ 
+### Running Locally
+Clone the repo and install dependencies. Consider using a python virtual environment:
+
+```bash
+git clone https://github.com/deanzhou/endplay.git
+cd endplay
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+Make sure you have Python 3.10+ and a compatible Stockfish binary.
+Start the Flask app:
+```bash
+gunicorn app:app
+```
+and it should open up as http://localhost:10000 on your browser
+
+### Technical Documentation
+
+
