@@ -5,6 +5,7 @@ from stockfish import Stockfish
 import torch
 from model.ChessMoveCNN import ChessMoveCNN
 import json
+import time
 
 app = Flask(__name__)
 
@@ -52,13 +53,20 @@ def move():
     if not board.is_game_over(): # Endplay responds
         # Get Top 5 moves by stockfish
         stockfish.set_fen_position(board.fen())
+        sf_start = time.time()
         top_sf_moves = stockfish.get_top_moves(5)
+        sf_end = time.time()
+        cnn_start = time.time()
         for dicti in top_sf_moves:
             move = chess.Move.from_uci(dicti['Move'])
             eval = 500 if (dicti["Mate"] or (dicti["Centipawn"] > 500)) else (dicti["Centipawn"]) # cap the eval to +5
             cnn_score = int(model.get_move_score(board, move) * -100)
             total = eval + cnn_score # do the best combined SF + CNN score
             output.append((board.san(move), eval, cnn_score, total))
+        cnn_end = time.time()
+
+        print(f"CNN Time: {cnn_end - cnn_start:.2f}s")
+        print(f"SF Time: {sf_end - sf_start:.2f}s")
 
         print(board.fen())
         output.sort(key=lambda x:x[3])
