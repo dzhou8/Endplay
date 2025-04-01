@@ -11,7 +11,8 @@ app = Flask(__name__)
 board = chess.Board()
 stockfish = Stockfish(path="./bin/stockfish-ubuntu-x86-64-avx2")
 model = ChessMoveCNN()
-model.load_state_dict(torch.load('./model/early_stop.pt'))
+model.load_state_dict(torch.load("./model/endplay_weights.pt", map_location=torch.device('cpu')))
+model.to('cpu')
 
 @app.route("/")
 def index():

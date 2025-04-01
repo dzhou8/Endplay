@@ -88,8 +88,7 @@ class ChessMoveCNN(nn.Module):
         
     def get_top_moves(self, board, n=5):
         x = utils.board_to_tensor(board)
-        device = next(self.parameters()).device
-        x = torch.tensor(x, dtype=torch.float32).unsqueeze(0).to(device)
+        x = torch.tensor(x, dtype=torch.float32).unsqueeze(0)
         with torch.no_grad():
             y = self(x)[0]
             pred = torch.sigmoid(y).cpu().numpy()
@@ -105,8 +104,7 @@ class ChessMoveCNN(nn.Module):
     
     def get_move_score(self, board, move):
         x = utils.board_to_tensor(board)
-        device = next(self.parameters()).device
-        x = torch.tensor(x, dtype=torch.float32).unsqueeze(0).to(device)
+        x = torch.tensor(x, dtype=torch.float32).unsqueeze(0)
         with torch.no_grad():
             y = self(x)[0]
             pred = torch.sigmoid(y).cpu().numpy()
