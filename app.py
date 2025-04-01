@@ -10,6 +10,35 @@ app = Flask(__name__)
 # Initialize global board and Stockfish engine
 board = chess.Board()
 stockfish = Stockfish(path="./bin/stockfish-ubuntu-x86-64")
+
+# some print debugging
+import os
+import subprocess
+
+print("Checking Stockfish path:", os.path.exists("./bin/stockfish-ubuntu-x86-64"))
+print("Is Stockfish executable:", os.access("./bin/stockfish-ubuntu-x86-64", os.X_OK))
+
+try:
+    # Try launching Stockfish manually
+    result = subprocess.run(
+        ["./bin/stockfish-ubuntu-x86-64"],
+        input="uci\nquit\n",
+        capture_output=True,
+        text=True,
+        timeout=5
+    )
+    print("Manual Stockfish run succeeded.")
+    print("STDOUT:\n", result.stdout)
+    print("STDERR:\n", result.stderr)
+except Exception as e:
+    print("Manual Stockfish run failed with exception:", e)
+
+# Optional: Check if Stockfish process is alive via the Python wrapper
+try:
+    print("Stockfish wrapper check:", stockfish.is_alive())
+except Exception as e:
+    print("Stockfish wrapper failed to start:", e)
+
 model = ChessMoveCNN()
 model.load_state_dict(torch.load("./model/endplay_weights.pt", map_location=torch.device('cpu')))
 model.to('cpu')

@@ -189,10 +189,14 @@
       const tableHTML = createTable(data.output);
       document.getElementById("outputText").innerHTML = tableHTML;
 
-      // show 'Start Over button' if drawn
-      console.log("Stockfish evaluation: ", data.output[0][1]);
-      if (data.output[0][1] < 100) {
+      // show 'Start Over button' if drawn or game over
+      if (!Array.isArray(data.output) || data.output.length === 0) {
         document.getElementById('startOverButton').style.visibility = 'visible';
+      } else {
+        console.log("Stockfish evaluation: ", data.output[0][1]);
+        if (data.output[0][1] < 100) {
+          document.getElementById('startOverButton').style.visibility = 'visible';
+        }
       }
     })
     .catch(err => {
@@ -204,6 +208,10 @@
   }
 
   function createTable(moves) {
+    if (!Array.isArray(moves) || moves.length === 0) {
+      return "<p><strong>Game Over</strong></p>";
+    }
+
     let tableHTML = "<table border='1' style='width:100%; text-align:left; border-collapse:collapse;'>";
     tableHTML += "<thead><tr><th>Move</th><th>SF Eval</th><th>CNN Score</th><th>Total</th></tr></thead>";
     tableHTML += "<tbody>";
