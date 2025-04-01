@@ -5,3 +5,4 @@ python-chess
 stockfish
 tqdm
 flask
+torch
