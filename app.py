@@ -3,7 +3,7 @@ import chess
 from stockfish import Stockfish
 
 import torch
-from model.ChessMoveCNN import ChessMoveCNN
+from model.SmallNet import ChessMoveCNN
 import json
 import time
 
@@ -13,8 +13,9 @@ app = Flask(__name__)
 board = chess.Board()
 stockfish = Stockfish(path="./bin/stockfish_20011801_x64")
 
+torch.set_num_threads(1)
 model = ChessMoveCNN()
-model.load_state_dict(torch.load("./model/endplay_weights.pt", map_location=torch.device('cpu')))
+model.load_state_dict(torch.load("./model/SmallNet.pt", map_location=torch.device('cpu')))
 model.to('cpu')
 
 @app.route("/")

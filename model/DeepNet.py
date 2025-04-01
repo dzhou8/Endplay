@@ -61,7 +61,9 @@ class ChessMoveCNN(nn.Module):
 
         # Input: (14, 8, 8) -> initial conv to expand channels
         in_channels = 14
-        channels = [('bb', 32), ('bb', 32), ('bb', 64), ('se', 64), ('bb', 64)]
+        channels = [('bb', 32), ('bb', 32), ('bb', 32), ('se', 32), 
+                    ('bb', 64), ('bb', 64), ('bb', 64), ('se', 64),
+                    ('bb', 128), ('bb', 128), ('bb', 128), ('se', 128)]
         for type, out_channels in channels:
             if (type == 'bb'):
                 layers.append(BasicBlock(in_channels, out_channels))
@@ -88,26 +90,34 @@ class ChessMoveCNN(nn.Module):
         
     def get_top_moves(self, board, n=5):
         x = utils.board_to_tensor(board)
-        x = torch.tensor(x, dtype=torch.float32).unsqueeze(0)
+        x = torch.from_numpy(x).float().unsqueeze(0)
         with torch.no_grad():
             y = self(x)[0]
-            pred = torch.sigmoid(y).cpu().numpy()
-        start_map, end_map = pred
+            pred = torch.sigmoid(y)
+            
+        start_map, end_map = pred[0], pred[1]
 
         move_scores = []
         for move in board.legal_moves:
-            score = start_map[move.from_square // 8][move.from_square % 8] * end_map[move.to_square // 8][move.to_square % 8]
-            move_scores.append((move, score))
-        
+            fr, fc = divmod(move.from_square, 8)
+            tr, tc = divmod(move.to_square, 8)
+            score = start_map[fr, fc] * end_map[tr, tc]
+            move_scores.append((move, score.item()))
+
         move_scores.sort(key=lambda x: x[1], reverse=True)
         return move_scores[:n]
     
     def get_move_score(self, board, move):
         x = utils.board_to_tensor(board)
-        x = torch.tensor(x, dtype=torch.float32).unsqueeze(0)
+        x = torch.from_numpy(x).float().unsqueeze(0)
+
         with torch.no_grad():
             y = self(x)[0]
-            pred = torch.sigmoid(y).cpu().numpy()
-        start_map, end_map = pred
+            pred = torch.sigmoid(y)
         
-        return start_map[move.from_square // 8][move.from_square % 8] * end_map[move.to_square // 8][move.to_square % 8]
+        start_map, end_map = pred[0], pred[1]
+
+        fr, fc = divmod(move.from_square, 8)
+        tr, tc = divmod(move.to_square, 8)
+        score = start_map[fr, fc] * end_map[tr, tc]
+        return score.item()
