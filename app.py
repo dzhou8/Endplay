@@ -45,13 +45,21 @@ def move():
     except:
         return jsonify({"error": "bad move format"}), 400
 
-    output = "game over"
-    # If game not over, let Endplay respond
-    if not board.is_game_over():
+    output = []
+    if not board.is_game_over(): # Endplay responds
+        # Get Top 5 moves by stockfish
+        stockfish.set_fen_position(board.fen())
+        top_sf_moves = stockfish.get_top_moves(5)
+        for dicti in top_sf_moves:
+            move = chess.Move.from_uci(dicti['Move'])
+            eval = 500 if (dicti["Mate"] or (dicti["Centipawn"] > 500)) else (dicti["Centipawn"]) # cap the eval to +5
+            cnn_score = int(model.get_move_score(board, move) * -100)
+            total = eval + cnn_score # do the best combined SF + CNN score
+            output.append((board.san(move), eval, cnn_score, total))
+
         print(board.fen())
-        best_moves = model.get_top_moves(board, 5)
-        output = [(board.san(move), float(score)) for move, score in best_moves]
-        board.push(best_moves[0][0])
+        output.sort(key=lambda x:x[3])
+        board.push_san(output[0][0])
 
     print(output)
     return jsonify({"fen": board.fen(), "output": output})

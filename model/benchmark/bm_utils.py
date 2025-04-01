@@ -33,7 +33,7 @@ def evaluate(X_test, Y_test, predict_fn):
     top1_correct = 0
     top5_correct = 0
 
-    num_samples = 50
+    num_samples = len(X_test)
     for i in tqdm(range(num_samples)):
         x = torch.tensor(X_test[i], dtype=torch.float32).to(device)
         board = utils.tensor_to_board(x)

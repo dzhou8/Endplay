@@ -98,6 +98,7 @@
       <textarea id="fenInput" placeholder="Enter FEN..." rows="3"></textarea>
       <br />
       <button onclick="loadFEN()">Load FEN</button>
+      <button onclick="openLichessAnalysis()">Open analysis in Lichess</button>
     </div>
 
     <div id="promotionSelector">
@@ -109,6 +110,7 @@
     </div>
 
     <div id="myBoard"></div>
+    <button id="startOverButton" style="visibility: hidden;" onclick="loadFEN()">Start Over</button>
   </div>
 
   <!-- Text output-->
@@ -185,7 +187,8 @@
       }
       game.load(data.fen);
       board.position(data.fen);
-      document.getElementById("outputText").innerText = JSON.stringify(data.output, null, 2);
+      const tableHTML = createTable(data.output);
+      document.getElementById("outputText").innerHTML = tableHTML;
     })
     .catch(err => {
       console.error(err);
@@ -193,6 +196,19 @@
       game.undo();
       board.position(game.fen());
     });
+  }
+
+  function createTable(moves) {
+    let tableHTML = "<table border='1' style='width:100%; text-align:left; border-collapse:collapse;'>";
+    tableHTML += "<thead><tr><th>Move</th><th>SF Eval</th><th>CNN Score</th><th>Total</th></tr></thead>";
+    tableHTML += "<tbody>";
+
+    moves.forEach(([move, eval, cnn_score, total]) => {
+      tableHTML += `<tr><td>${move}</td><td>${eval}</td><td>${cnn_score}</td><td>${total}</td></tr>`;
+    });
+
+    tableHTML += "</tbody></table>";
+    return tableHTML;
   }
 
   function onSnapEnd() {
@@ -219,6 +235,18 @@
       console.error("Request failed:", err);
       alert("Something went wrong while loading the FEN.");
     });
+    
+    document.getElementById('startOverButton').style.visibility = 'hidden';
+  }
+
+  function openLichessAnalysis() {
+    const fen = document.getElementById("fenInput").value.trim();
+    if (fen) {
+      const lichessUrl = `https://lichess.org/analysis/${fen}`;
+      window.open(lichessUrl, "_blank");  // Open Lichess analysis in a new tab
+    } else {
+      alert("Please enter a valid FEN.");
+    }
   }
 
   fetch("/positions")
