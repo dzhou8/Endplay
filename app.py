@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 # Initialize global board and Stockfish engine
 board = chess.Board()
-stockfish = Stockfish(path="./bin/stockfish-ubuntu-x86-64-avx2")
+stockfish = Stockfish(path="./bin/stockfish-ubuntu-x86-64")
 model = ChessMoveCNN()
 model.load_state_dict(torch.load("./model/endplay_weights.pt", map_location=torch.device('cpu')))
 model.to('cpu')
