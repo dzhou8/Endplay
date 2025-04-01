@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(1, '../../preprocessing/')
+sys.path.insert(1, '../preprocessing/')
 import utils
 import torch
 import chess
