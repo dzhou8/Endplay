@@ -88,7 +88,6 @@
 <div style="display: flex;">
   <!-- Sidebar -->
   <div id="positionList">
-    <h3>Saved Positions</h3>
     <div id="positionLinks">Loading...</div>
   </div>
 
@@ -133,7 +132,7 @@
 </div>
 
 <script>
-  const initialFEN = "4k1K1/6P1/8/8/8/8/7r/5R2 w - - 0 1";
+  const initialFEN = "K7/8/8/3k4/8/8/8/Q7 w - - 0 1";
 
   const game = new Chess();
   game.load(initialFEN);
@@ -189,6 +188,12 @@
       board.position(data.fen);
       const tableHTML = createTable(data.output);
       document.getElementById("outputText").innerHTML = tableHTML;
+
+      // show 'Start Over button' if drawn
+      console.log("Stockfish evaluation: ", data.output[0][1]);
+      if (data.output[0][1] < 100) {
+        document.getElementById('startOverButton').style.visibility = 'visible';
+      }
     })
     .catch(err => {
       console.error(err);
@@ -237,6 +242,7 @@
     });
     
     document.getElementById('startOverButton').style.visibility = 'hidden';
+    document.getElementById('outputText').innerHTML = "";
   }
 
   function openLichessAnalysis() {
