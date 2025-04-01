@@ -61,7 +61,7 @@ class ChessMoveCNN(nn.Module):
 
         # Input: (14, 8, 8) -> initial conv to expand channels
         in_channels = 14
-        channels = [('bb', 64), ('bb', 64), ('bb', 128), ('se', 128), ('bb', 128), ('bb', 128), ('bb', 256), ('se', 256), ('bb', 256), ('bb', 256)]
+        channels = [('bb', 32), ('bb', 32), ('bb', 64), ('se', 64), ('bb', 64)]
         for type, out_channels in channels:
             if (type == 'bb'):
                 layers.append(BasicBlock(in_channels, out_channels))
@@ -74,10 +74,10 @@ class ChessMoveCNN(nn.Module):
         self.dropout = nn.Dropout(p=0.2)
 
         self.out_head = nn.Sequential(
-            nn.Conv2d(in_channels, 64, kernel_size=3, padding=1),
-            nn.BatchNorm2d(64),
+            nn.Conv2d(in_channels, 32, kernel_size=3, padding=1),
+            nn.BatchNorm2d(32),
             nn.ReLU(inplace=True),
-            nn.Conv2d(64, 2, kernel_size=1)
+            nn.Conv2d(32, 2, kernel_size=1)
         )
 
     def forward(self, x):
