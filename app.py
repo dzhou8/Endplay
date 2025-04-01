@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 # Initialize global board and Stockfish engine
 board = chess.Board()
-stockfish = Stockfish(path="./bin/stockfish_14_x64_popcnt")
+stockfish = Stockfish(path="./bin/stockfish_20011801_x64")
 
 model = ChessMoveCNN()
 model.load_state_dict(torch.load("./model/endplay_weights.pt", map_location=torch.device('cpu')))
@@ -83,7 +83,7 @@ def positions():
 
 
 if __name__ == "__main__":
-    pass
-    # import os
-    # port = int(os.environ.get("PORT", 5000))
-    # app.run(debug=True, host="0.0.0.0", port=port)
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=True, host="0.0.0.0", port=port)
+    # pass
