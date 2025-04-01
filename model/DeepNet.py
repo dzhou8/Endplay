@@ -63,7 +63,8 @@ class ChessMoveCNN(nn.Module):
         in_channels = 14
         channels = [('bb', 32), ('bb', 32), ('bb', 32), ('se', 32), 
                     ('bb', 64), ('bb', 64), ('bb', 64), ('se', 64),
-                    ('bb', 128), ('bb', 128), ('bb', 128), ('se', 128)]
+                    ('bb', 128), ('bb', 128), ('bb', 128), ('se', 128),
+                    ('bb', 256), ('bb', 256), ('bb', 256), ('se', 256)]
         for type, out_channels in channels:
             if (type == 'bb'):
                 layers.append(BasicBlock(in_channels, out_channels))
