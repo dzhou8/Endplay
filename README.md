@@ -28,7 +28,7 @@ Stockfish quickly runs away from the promotion square.
 
 <img src="./demo/endplay_fast.gif" width="50%" />
 
-I stalemate during my first try. This same position seems much tougher to win.
+I stalemate during my first try. The same position is much tougher to win.
 
 ## Features
 
