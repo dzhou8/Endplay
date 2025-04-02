@@ -22,23 +22,23 @@ This makes EndPlay a powerful training partner when you're trying to convert won
 
 **Stockfish**
 
-<img src="./demo/stockfish_fast.gif" width="50%" />
+<img src="./demo/stockfish_fast.gif" width="75%" />
 
 Stockfish quickly runs away from the promotion square.
 
 **EndPlay**
 
-<img src="./demo/endplay_fast.gif" width="50%" />
+<img src="./demo/endplay_fast.gif" width="60%" />
 
 I stalemate during my first try. The same position is much tougher to win.
 
 ## Features
 
 ### Browse preset endgames
-<img src="./demo/positions_fast.gif" width="65%" />
+<img src="./demo/positions_fast.gif" width="90%" />
 
 ### Load your own FEN or analyze in Lichess
-<img src="./demo/links_fast.gif" width="65%" />
+<img src="./demo/links_fast.gif" width="90%" />
 
 ## What does it do?
 - Uses a CNN trained on master-level endgames
