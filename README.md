@@ -1,22 +1,42 @@
 # ♟️ EndPlay: A Chess Bot That Fights Back in Endgames
 
-A deep learning + classical engine hybrid that defends more resiliently than Stockfish alone
+A deep learning + classical engine hybrid that defends more resiliently than Stockfish alone.
 
-Try the live demo -> [endplay.up.railway.app](https://endplay.up.railway.app/)
+Try the live demo → [endplay.up.railway.app](https://endplay.up.railway.app/)
 
-## Why it's Different
-Chess engines can be a useful tool for practicing endgames. But they can 'give up' in some positions, because every move is losing.  
-<img src="./demo/stockfish.gif" width="60%" />  
+---
+
+## Why It's Different
+
+Chess engines can be a useful tool for practicing endgames. But they can 'give up' in some positions, because every move is losing.
 Stockfish plays the "best" move, even if it trivially allows pawn promotion.
+EndPlay plays the most testing, tricky, and resourceful moves — like a strong human would.
 
-EndPlay plays the most testing, tricky, and resourceful moves — like a strong human would.  
-<img src="./demo/endplay.gif" width="60%" /> 
+This makes EndPlay a powerful training partner when you're trying to convert won endgames against a tough defender.
 
-**Browse preset endgames**  
-<img src="./demo/positions.gif" width="80%" />
+---
 
-**Load your own FEN**  
-<img src="./demo/links" width="80%" />
+## Example: Promotion Defense
+
+**Stockfish**
+
+<img src="./demo/stockfish_fast.gif" width="50%" />
+
+Stockfish quickly runs away from the promotion square.
+
+**EndPlay**
+
+<img src="./demo/endplay_fast.gif" width="50%" />
+
+I stalemate during my first try. This same position seems much tougher to win.
+
+## Features
+
+### Browse preset endgames
+<img src="./demo/positions_fast.gif" width="65%" />
+
+### Load your own FEN or Lichess game
+<img src="./demo/links_fast.gif" width="65%" />
 
 ## What does it do?
 - Uses a CNN trained on master-level endgames
