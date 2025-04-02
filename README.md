@@ -5,15 +5,18 @@ A deep learning + classical engine hybrid that defends more resiliently than Sto
 Try the live demo -> [endplay.up.railway.app](https://endplay.up.railway.app/)
 
 ## Why it's Different
-Chess engines can be a useful tool for practicing endgames. But they can 'give up' in some positions, because every move is losing.
-![Stockfish Demo](./demo/stockfish.gif)
-Stockfish plays the "best" move, even if it trivially allows pawn promotion
+Chess engines can be a useful tool for practicing endgames. But they can 'give up' in some positions, because every move is losing.  
+<img src="./demo/stockfish.gif" width="60%" />  
+Stockfish plays the "best" move, even if it trivially allows pawn promotion.
 
-EndPlay plays the most testing, tricky, and resourceful moves -- like a strong human would
-![Endplay Demo](./demo/Endplay.gif)
+EndPlay plays the most testing, tricky, and resourceful moves — like a strong human would.  
+<img src="./demo/endplay.gif" width="60%" /> 
 
-You can find common endgames or load your own position
-![Loading Demo](./demo/loading.gif)
+**Browse preset endgames**  
+<img src="./demo/positions.gif" width="80%" />
+
+**Load your own FEN**  
+<img src="./demo/links" width="80%" />
 
 ## What does it do?
 - Uses a CNN trained on master-level endgames
