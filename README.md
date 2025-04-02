@@ -9,7 +9,9 @@ Try the live demo → [endplay.up.railway.app](https://endplay.up.railway.app/)
 ## Why It's Different
 
 Chess engines can be a useful tool for practicing endgames. But they can 'give up' in some positions, because every move is losing.
+
 Stockfish plays the "best" move, even if it trivially allows pawn promotion.
+
 EndPlay plays the most testing, tricky, and resourceful moves — like a strong human would.
 
 This makes EndPlay a powerful training partner when you're trying to convert won endgames against a tough defender.
@@ -75,5 +77,5 @@ gunicorn app:app
 and it should open up as http://localhost:10000 on your browser
 
 ### Technical Documentation
-
+TODO
 
