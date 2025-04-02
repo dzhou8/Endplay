@@ -35,7 +35,7 @@ I stalemate during my first try. The same position is much tougher to win.
 ### Browse preset endgames
 <img src="./demo/positions_fast.gif" width="65%" />
 
-### Load your own FEN or Lichess game
+### Load your own FEN or analyze in Lichess
 <img src="./demo/links_fast.gif" width="65%" />
 
 ## What does it do?
