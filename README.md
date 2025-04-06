@@ -62,8 +62,8 @@ I stalemate during my first try. The same position is much tougher to win.
 Clone the repo and install dependencies. Consider using a python virtual environment:
 
 ```bash
-git clone https://github.com/deanzhou/endplay.git
-cd endplay
+git clone https://github.com/deanzhou/Endplay.git
+cd Endplay
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -74,7 +74,7 @@ Start the Flask app:
 ```bash
 gunicorn app:app
 ```
-and it should open up as http://localhost:10000 on your browser
+and it should open up as http://localhost:8000 on your browser
 
 ### Technical Documentation
 TODO
